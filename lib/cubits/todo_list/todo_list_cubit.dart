@@ -37,7 +37,7 @@ class TodoListCubit extends Cubit<TodoListState> {
           return Todo(
             id: id,
             desc: todo.desc,
-            completed: todo.completed,
+            completed: !todo.completed,
           );
         }
         return todo;

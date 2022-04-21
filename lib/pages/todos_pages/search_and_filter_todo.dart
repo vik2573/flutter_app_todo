@@ -23,9 +23,10 @@ class SearchAndFilterTodo extends StatelessWidget {
           onChanged: (String? newSearchTerm) {
             if (newSearchTerm != null) {
               debounce.run(
-                () {},
+                () {
+                  context.read<TodoSearchCubit>().setSearchTerm(newSearchTerm);
+                },
               );
-              context.read<TodoSearchCubit>().setSearchTerm(newSearchTerm);
             }
           },
         ),
