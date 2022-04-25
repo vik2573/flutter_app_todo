@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_todo/cubits/active_todo_count/active_todo_count_cubit.dart';
-import 'package:flutter_app_todo/cubits/todo_list/todo_list_cubit.dart';
-import 'package:flutter_app_todo/models/todo_model.dart';
+
+import 'package:flutter_app_todo/blocs/blocs.dart';
+// import 'package:flutter_app_todo/models/todo_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TodoHeader extends StatelessWidget {
@@ -27,7 +27,7 @@ class TodoHeader extends StatelessWidget {
         //         .calculateActiveTodoCount(activeTodoCount);
         //   },
         // child:
-        BlocBuilder<ActiveTodoCountCubit, ActiveTodoCountState>(
+        BlocBuilder<ActiveTodoCountBloc, ActiveTodoCountState>(
           builder: (context, state) {
             return Text(
               '${state.activeTodoCount} itemleft',
