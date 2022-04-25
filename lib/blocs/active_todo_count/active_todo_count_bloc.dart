@@ -2,23 +2,23 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_app_todo/blocs/todo_list/todo_list_bloc.dart';
+import 'package:flutter_app_todo/models/todo_model.dart';
 
-import '../../models/todo_model.dart';
-import '../todo_list/todo_list_cubit.dart';
-
+part 'active_todo_count_event.dart';
 part 'active_todo_count_state.dart';
 
-class ActiveTodoCountCubit extends Cubit<ActiveTodoCountState> {
+class ActiveTodoCountBloc
+    extends Bloc<ActiveTodoCountEvent, ActiveTodoCountState> {
   late final StreamSubscription todoListSubscription;
-
   final int initialActiveTodoCount;
-  final TodoListCubit todoListCubit;
-  ActiveTodoCountCubit({
+  final TodoListBloc todoListBloc;
+  ActiveTodoCountBloc({
     required this.initialActiveTodoCount,
-    required this.todoListCubit,
+    required this.todoListBloc,
   }) : super(ActiveTodoCountState(activeTodoCount: initialActiveTodoCount)) {
     todoListSubscription =
-        todoListCubit.stream.listen((TodoListState todoListState) {
+        todoListBloc.stream.listen((TodoListState todoListState) {
       print('todoListState: $todoListState');
 
       final int currentActiveTodoCount = todoListState.todos
@@ -26,10 +26,13 @@ class ActiveTodoCountCubit extends Cubit<ActiveTodoCountState> {
           .toList()
           .length;
 
-      emit(state.copyWith(activeTodoCount: currentActiveTodoCount));
+      add(CalculateActiveTodoCountEvent(
+          activeTodoCount: currentActiveTodoCount));
+    });
+    on<CalculateActiveTodoCountEvent>((event, emit) {
+      emit(state.copyWith(activeTodoCount: event.activeTodoCount));
     });
   }
-
   @override
   Future<void> close() {
     todoListSubscription.cancel();
